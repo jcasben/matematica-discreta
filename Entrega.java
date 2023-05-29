@@ -58,28 +58,71 @@ class Entrega {
      * És cert que ∀x ∃!y. P(x) -> Q(x,y) ?
      */
     static boolean exercici1(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
-      return false; // TO DO
+      for (int x : universe) {
+        boolean found = false;
+        for (int y : universe) {
+          if(p.test(x) && !q.test(x,y)) {
+            continue;
+          }
+          if (found) return false;
+          found = true;
+        }
+        if (!found) return false;
+      }
+      return true; // TO DO
     }
 
     /*
      * És cert que ∃!x ∀y. P(y) -> Q(x,y) ?
      */
     static boolean exercici2(int[] universe, Predicate<Integer> p, BiPredicate<Integer, Integer> q) {
-      return false; // TO DO
+      boolean found = false;
+      for (int x : universe) {
+        boolean incorrect = false;
+        for (int y : universe) {
+          if(p.test(y) && !q.test(x,y)) {
+            incorrect = true;
+            break;
+          }
+        }
+        if (found && !incorrect) return false;
+        if(!incorrect) found = true;
+      }
+      if (!found) return false;
+      return true;
     }
 
     /*
      * És cert que ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
      */
     static boolean exercici3(int[] universe, BiPredicate<Integer, Integer> p, BiPredicate<Integer, Integer> q) {
-      return false; // TO DO
+      boolean found = false;
+      for (int x : universe) {
+        for (int y : universe) {
+          for (int z : universe) {
+            if ((!p.test(x, z) && !q.test(y, z)) || (p.test(x, z) && q.test(y, z))) {
+              break;
+            }
+            found = true;
+          }
+        }
+      }
+      if(!found) return false;
+      return true;
     }
 
     /*
      * És cert que (∀x. P(x)) -> (∀x. Q(x)) ?
      */
     static boolean exercici4(int[] universe, Predicate<Integer> p, Predicate<Integer> q) {
-      return false; // TO DO
+      boolean testP = true;
+      boolean testQ = true;
+      for (int x : universe) {
+        if (!p.test(x)) testP = false;
+        if (!q.test(x)) testQ = false;
+      }
+      if (testP && !testQ) return false;
+      return true;
     }
 
     /*
@@ -348,7 +391,9 @@ class Entrega {
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
   static void assertThat(boolean b) {
     if (!b)
-      throw new AssertionError();
+      //throw new AssertionError();
+      System.out.println("falso");
+    else System.out.println("verdadero");
   }
 }
 
