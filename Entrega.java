@@ -1,11 +1,13 @@
 import java.lang.AssertionError;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
-import java.util.Set;
 
 /*
  * Aquesta entrega consisteix en implementar tots els mètodes annotats amb el comentari "// TO DO".
@@ -377,6 +379,299 @@ class Entrega {
   }
 
   /*
+   * Aquí teniu els exercicis del Tema 3 (Grafs).
+   *
+   * Donarem els grafs en forma de diccionari d'adjacència, és a dir, un graf serà un array
+   * on cada element i-èssim serà un array ordenat que contendrà els índexos dels vèrtexos adjacents
+   * al i-èssim vèrtex. Per exemple, el graf cicle C_3 vendria donat per
+   *
+   *  int[][] g = {{1,2}, {0,2}, {0,1}}  (no dirigit: v0 -> {v1, v2}, v1 -> {v0, v2}, v2 -> {v0,v1})
+   *  int[][] g = {{1}, {2}, {0}}        (dirigit: v0 -> {v1}, v1 -> {v2}, v2 -> {v0})
+   *
+   * Podeu suposar que cap dels grafs té llaços.
+   */
+  static class Tema3 {
+    /*
+     * Retornau l'ordre menys la mida del graf (no dirigit).
+     */
+    static int exercici1(int[][] g) {
+      return -1; // TO DO
+    }
+
+    /*
+     * Suposau que el graf (no dirigit) és connex. És bipartit?
+     */
+    static boolean exercici2(int[][] g) {
+      return false; // TO DO
+    }
+
+    /*
+     * Suposau que el graf és un DAG. Retornau el nombre de descendents amb grau de sortida 0 del
+     * vèrtex i-èssim.
+     */
+    static int exercici3(int[][] g, int i) {
+      return -1; // TO DO
+    }
+
+    /*
+     * Donat un arbre arrelat (dirigit, suposau que l'arrel es el vèrtex 0), trobau-ne el diàmetre
+     * del graf subjacent. Suposau que totes les arestes tenen pes 1.
+     */
+    static int exercici4(int[][] g) {
+      return -1; // TO DO
+    }
+
+    /*
+     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
+     */
+    static void tests() {
+      final int[][] undirectedK6 = {
+        { 1, 2, 3, 4, 5 },
+        { 0, 2, 3, 4, 5 },
+        { 0, 1, 3, 4, 5 },
+        { 0, 1, 2, 4, 5 },
+        { 0, 1, 2, 3, 5 },
+        { 0, 1, 2, 3, 4 },
+      };
+
+      /*
+         1
+      4  0  2
+         3
+      */
+      final int[][] undirectedW4 = {
+        { 1, 2, 3, 4 },
+        { 0, 2, 4 },
+        { 0, 1, 3 },
+        { 0, 2, 4 },
+        { 0, 1, 3 },
+      };
+
+      // 0, 1, 2 | 3, 4
+      final int[][] undirectedK23 = {
+        { 3, 4 },
+        { 3, 4 },
+        { 3, 4 },
+        { 0, 1, 2 },
+        { 0, 1, 2 },
+      };
+
+      /*
+             7
+             0
+           1   2
+             3   8
+             4
+           5   6
+      */
+      final int[][] directedG1 = {
+        { 1, 2 }, // 0
+        { 3 },    // 1
+        { 3, 8 }, // 2
+        { 4 },    // 3
+        { 5, 6 }, // 4
+        {},       // 5
+        {},       // 6
+        { 0 },    // 7
+        {},
+      };
+
+
+      /*
+              0
+         1    2     3
+            4   5   6
+           7 8
+      */
+
+      final int[][] directedRTree1 = {
+        { 1, 2, 3 }, // 0 = r
+        {},          // 1
+        { 4, 5 },    // 2
+        { 6 },       // 3
+        { 7, 8 },    // 4
+        {},          // 5
+        {},          // 6
+        {},          // 7
+        {},          // 8
+      };
+
+      /*
+            0
+            1
+         2     3
+             4   5
+                6  7
+      */
+
+      final int[][] directedRTree2 = {
+        { 1 },
+        { 2, 3 },
+        {},
+        { 4, 5 },
+        {},
+        { 6, 7 },
+        {},
+        {},
+      };
+
+      assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
+      assertThat(exercici1(undirectedW4) == 5 - 2*4);
+
+      assertThat(exercici2(undirectedK23));
+      assertThat(!exercici2(undirectedK6));
+
+      assertThat(exercici3(directedG1, 0) == 3);
+      assertThat(exercici3(directedRTree1, 2) == 3);
+
+      assertThat(exercici4(directedRTree1) == 5);
+      assertThat(exercici4(directedRTree2) == 4);
+    }
+  }
+
+  /*
+   * Aquí teniu els exercicis del Tema 4 (Aritmètica).
+   *
+   * Per calcular residus podeu utilitzar l'operador %, però anau alerta amb els signes.
+   * Podeu suposar que cada vegada que se menciona un mòdul, és major que 1.
+   */
+  static class Tema4 {
+    /*
+     * Donau la solució de l'equació
+     *
+     *   ax ≡ b (mod n),
+     *
+     * Els paràmetres `a` i `b` poden ser negatius (`b` pot ser zero), però podeu suposar que n > 1.
+     *
+     * Si la solució és x ≡ c (mod m), retornau `new int[] { c, m }`, amb 0 ⩽ c < m.
+     * Si no en té, retornau null.
+     */
+    static int[] exercici1(int a, int b, int n) {
+      return null; // TO DO
+    }
+
+    /*
+     * Donau la solució (totes) del sistema d'equacions
+     *
+     *  { x ≡ b[0] (mod n[0])
+     *  { x ≡ b[1] (mod n[1])
+     *  { x ≡ b[2] (mod n[2])
+     *  { ...
+     *
+     * Cada b[i] pot ser negatiu o zero, però podeu suposar que n[i] > 1. També podeu suposar
+     * que els dos arrays tenen la mateixa longitud.
+     *
+     * Si la solució és de la forma x ≡ c (mod m), retornau `new int[] { c, m }`, amb 0 ⩽ c < m.
+     * Si no en té, retornau null.
+     */
+    static int[] exercici2a(int[] b, int[] n) {
+      return null; // TO DO
+    }
+
+    /*
+     * Donau la solució (totes) del sistema d'equacions
+     *
+     *  { a[0]·x ≡ b[0] (mod n[0])
+     *  { a[1]·x ≡ b[1] (mod n[1])
+     *  { a[2]·x ≡ b[2] (mod n[2])
+     *  { ...
+     *
+     * Cada a[i] o b[i] pot ser negatiu (b[i] pot ser zero), però podeu suposar que n[i] > 1. També
+     * podeu suposar que els tres arrays tenen la mateixa longitud.
+     *
+     * Si la solució és de la forma x ≡ c (mod m), retornau `new int[] { c, m }`, amb 0 ⩽ c < m.
+     * Si no en té, retornau null.
+     */
+    static int[] exercici2b(int[] a, int[] b, int[] n) {
+      return null; // TO DO
+    }
+
+    /*
+     * Suposau que n > 1. Donau-ne la seva descomposició en nombres primers, ordenada de menor a
+     * major, on cada primer apareix tantes vegades com el seu ordre. Per exemple,
+     *
+     * exercici4a(300) --> new int[] { 2, 2, 3, 5, 5 }
+     *
+     * No fa falta que cerqueu algorismes avançats de factorització, podeu utilitzar la força bruta
+     * (el que coneixeu com el mètode manual d'anar provant).
+     */
+    static ArrayList<Integer> exercici3a(int n) {
+      return new ArrayList<>(); // TO DO
+    }
+
+    /*
+     * Retornau el nombre d'elements invertibles a Z mòdul n³.
+     *
+     * Alerta: podeu suposar que el resultat hi cap a un int (32 bits a Java), però n³ no té perquè.
+     * De fet, no doneu per suposat que pogueu tractar res més gran que el resultat.
+     *
+     * No podeu utilitzar `long` per solucionar aquest problema. Necessitareu l'exercici 3a.
+     */
+    static int exercici3b(int n) {
+      return -1; // TO DO
+    }
+
+    /*
+     * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
+     */
+    static void tests() {
+      assertThat(Arrays.equals(exercici1(17, 1, 30), new int[] { 23, 30 }));
+      assertThat(Arrays.equals(exercici1(-2, -4, 6), new int[] { 2, 3 }));
+      assertThat(exercici1(2, 3, 6) == null);
+
+      assertThat(
+        exercici2a(
+          new int[] { 1, 0 },
+          new int[] { 2, 4 }
+        )
+        == null
+      );
+
+      assertThat(
+        Arrays.equals(
+          exercici2a(
+            new int[] { 3, -1, 2 },
+            new int[] { 5,  8, 9 }
+          ),
+          new int[] { 263, 360 }
+        )
+      );
+
+      assertThat(
+        exercici2b(
+          new int[] { 1, 1 },
+          new int[] { 1, 0 },
+          new int[] { 2, 4 }
+        )
+        == null
+      );
+
+      assertThat(
+        Arrays.equals(
+          exercici2b(
+            new int[] { 2,  -1, 5 },
+            new int[] { 6,   1, 1 },
+            new int[] { 10,  8, 9 }
+          ),
+          new int[] { 263, 360 }
+        )
+      );
+
+      assertThat(exercici3a(10).equals(List.of(2, 5)));
+      assertThat(exercici3a(1291).equals(List.of(1291)));
+      assertThat(exercici3a(1292).equals(List.of(2, 2, 17, 19 )));
+
+      assertThat(exercici3b(10) == 400);
+
+      // Aquí 1292³ ocupa més de 32 bits amb el signe, però es pot resoldre sense calcular n³.
+      assertThat(exercici3b(1292) == 961_496_064);
+
+      // Aquest exemple té el resultat fora de rang
+      //assertThat(exercici3b(1291) == 2_150_018_490);
+    }
+  }
+
+  /*
    * Aquest mètode `main` conté alguns exemples de paràmetres i dels resultats que haurien de donar
    * els exercicis. Podeu utilitzar-los de guia i també en podeu afegir d'altres (no els tendrem en
    * compte, però és molt recomanable).
@@ -386,6 +681,8 @@ class Entrega {
   public static void main(String[] args) {
     Tema1.tests();
     Tema2.tests();
+    Tema3.tests();
+    Tema4.tests();
   }
 
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
