@@ -135,77 +135,77 @@ class Entrega {
       // ∀x ∃!y. P(x) -> Q(x,y) ?
 
       assertThat(
-          exercici1(
-              new int[] { 2, 3, 5, 6 },
-              x -> x != 4,
-              (x, y) -> x == y
-          )
+              exercici1(
+                      new int[] { 2, 3, 5, 6 },
+                      x -> x != 4,
+                      (x, y) -> x == y
+              )
       );
 
       assertThat(
-          !exercici1(
-              new int[] { -2, -1, 0, 1, 2, 3 },
-              x -> x != 0,
-              (x, y) -> x * y == 1
-          )
+              !exercici1(
+                      new int[] { -2, -1, 0, 1, 2, 3 },
+                      x -> x != 0,
+                      (x, y) -> x * y == 1
+              )
       );
 
       // Exercici 2
       // ∃!x ∀y. P(y) -> Q(x,y) ?
 
       assertThat(
-          exercici2(
-              new int[] { -1, 1, 2, 3, 4 },
-              y -> y <= 0,
-              (x, y) -> x == -y
-          )
+              exercici2(
+                      new int[] { -1, 1, 2, 3, 4 },
+                      y -> y <= 0,
+                      (x, y) -> x == -y
+              )
       );
 
       assertThat(
-          !exercici2(
-              new int[] { -2, -1, 1, 2, 3, 4 },
-              y -> y < 0,
-              (x, y) -> x * y == 1
-          )
+              !exercici2(
+                      new int[] { -2, -1, 1, 2, 3, 4 },
+                      y -> y < 0,
+                      (x, y) -> x * y == 1
+              )
       );
 
       // Exercici 3
       // ∃x,y ∀z. P(x,z) ⊕ Q(y,z) ?
 
       assertThat(
-          exercici3(
-              new int[] { 2, 3, 4, 5, 6, 7, 8 },
-              (x, z) -> z % x == 0,
-              (y, z) -> z % y == 1
-          )
+              exercici3(
+                      new int[] { 2, 3, 4, 5, 6, 7, 8 },
+                      (x, z) -> z % x == 0,
+                      (y, z) -> z % y == 1
+              )
       );
 
       assertThat(
-          !exercici3(
-              new int[] { 2, 3 },
-              (x, z) -> z % x == 1,
-              (y, z) -> z % y == 1
-          )
+              !exercici3(
+                      new int[] { 2, 3 },
+                      (x, z) -> z % x == 1,
+                      (y, z) -> z % y == 1
+              )
       );
 
       // Exercici 4
       // (∀x. P(x)) -> (∀x. Q(x)) ?
 
       assertThat(
-          exercici4(
-              new int[] { 0, 1, 2, 3, 4, 5, 8, 9, 16 },
-              x -> x % 2 == 0, // x és múltiple de 2
-              x -> x % 4 == 0 // x és múltiple de 4
-          )
+              exercici4(
+                      new int[] { 0, 1, 2, 3, 4, 5, 8, 9, 16 },
+                      x -> x % 2 == 0, // x és múltiple de 2
+                      x -> x % 4 == 0 // x és múltiple de 4
+              )
 
       );
 
       assertThat(
-          !exercici4(
-              new int[] { 0, 2, 4, 6, 8, 16 },
-              x -> x % 2 == 0, // x és múltiple de 2
-              x -> x % 4 == 0 // x és múltiple de 4
-          )
+              !exercici4(
+                      new int[] { 0, 2, 4, 6, 8, 16 },
+                      x -> x % 2 == 0, // x és múltiple de 2
+                      x -> x % 4 == 0 // x és múltiple de 4
+              )
       );
     }
   }
@@ -275,17 +275,17 @@ class Entrega {
       // `rel` és d'equivalencia?
 
       assertThat(
-          exercici1(
-              new int[] { 0, 1, 2, 3 },
-              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
-          )
+              exercici1(
+                      new int[] { 0, 1, 2, 3 },
+                      new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
+              )
       );
 
       assertThat(
-          !exercici1(
-              new int[] { 0, 1, 2, 3 },
-              new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 2}, {1, 3}, {2, 1}, {3, 1} }
-          )
+              !exercici1(
+                      new int[] { 0, 1, 2, 3 },
+                      new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 2}, {1, 3}, {2, 1}, {3, 1} }
+              )
       );
 
       // Exercici 2
@@ -294,19 +294,19 @@ class Entrega {
       final int[] int09 = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
       assertThat(
-          exercici2(
-            int09,
-            generateRel(int09, int09, (x, y) -> x % 3 == y % 3)
-          )
-          == 3
+              exercici2(
+                      int09,
+                      generateRel(int09, int09, (x, y) -> x % 3 == y % 3)
+              )
+                      == 3
       );
 
       assertThat(
-          exercici2(
-              new int[] { 1, 2, 3 },
-              new int[][] { {1, 1}, {2, 2} }
-          )
-          == -1
+              exercici2(
+                      new int[] { 1, 2, 3 },
+                      new int[][] { {1, 1}, {2, 2} }
+              )
+                      == -1
       );
 
       // Exercici 3
@@ -315,19 +315,19 @@ class Entrega {
       final int[] int05 = { 0, 1, 2, 3, 4, 5 };
 
       assertThat(
-          exercici3(
-            int05,
-            int09,
-            generateRel(int05, int09, (x, y) -> x == y)
-          )
+              exercici3(
+                      int05,
+                      int09,
+                      generateRel(int05, int09, (x, y) -> x == y)
+              )
       );
 
       assertThat(
-          !exercici3(
-            int05,
-            int09,
-            generateRel(int05, int09, (x, y) -> x == y/2)
-          )
+              !exercici3(
+                      int05,
+                      int09,
+                      generateRel(int05, int09, (x, y) -> x == y/2)
+              )
       );
 
       // Exercici 4
@@ -336,30 +336,30 @@ class Entrega {
       // sino, 0
 
       assertThat(
-          exercici4(
-            int09,
-            int05,
-            x -> x / 4
-          )
-          == 0
+              exercici4(
+                      int09,
+                      int05,
+                      x -> x / 4
+              )
+                      == 0
       );
 
       assertThat(
-          exercici4(
-            int05,
-            int09,
-            x -> x + 3
-          )
-          == int05.length - int09.length
+              exercici4(
+                      int05,
+                      int09,
+                      x -> x + 3
+              )
+                      == int05.length - int09.length
       );
 
       assertThat(
-          exercici4(
-            int05,
-            int05,
-            x -> (x + 3) % 6
-          )
-          == 1
+              exercici4(
+                      int05,
+                      int05,
+                      x -> (x + 3) % 6
+              )
+                      == 1
       );
     }
 
@@ -427,12 +427,12 @@ class Entrega {
      */
     static void tests() {
       final int[][] undirectedK6 = {
-        { 1, 2, 3, 4, 5 },
-        { 0, 2, 3, 4, 5 },
-        { 0, 1, 3, 4, 5 },
-        { 0, 1, 2, 4, 5 },
-        { 0, 1, 2, 3, 5 },
-        { 0, 1, 2, 3, 4 },
+              { 1, 2, 3, 4, 5 },
+              { 0, 2, 3, 4, 5 },
+              { 0, 1, 3, 4, 5 },
+              { 0, 1, 2, 4, 5 },
+              { 0, 1, 2, 3, 5 },
+              { 0, 1, 2, 3, 4 },
       };
 
       /*
@@ -441,20 +441,20 @@ class Entrega {
          3
       */
       final int[][] undirectedW4 = {
-        { 1, 2, 3, 4 },
-        { 0, 2, 4 },
-        { 0, 1, 3 },
-        { 0, 2, 4 },
-        { 0, 1, 3 },
+              { 1, 2, 3, 4 },
+              { 0, 2, 4 },
+              { 0, 1, 3 },
+              { 0, 2, 4 },
+              { 0, 1, 3 },
       };
 
       // 0, 1, 2 | 3, 4
       final int[][] undirectedK23 = {
-        { 3, 4 },
-        { 3, 4 },
-        { 3, 4 },
-        { 0, 1, 2 },
-        { 0, 1, 2 },
+              { 3, 4 },
+              { 3, 4 },
+              { 3, 4 },
+              { 0, 1, 2 },
+              { 0, 1, 2 },
       };
 
       /*
@@ -466,15 +466,15 @@ class Entrega {
            5   6
       */
       final int[][] directedG1 = {
-        { 1, 2 }, // 0
-        { 3 },    // 1
-        { 3, 8 }, // 2
-        { 4 },    // 3
-        { 5, 6 }, // 4
-        {},       // 5
-        {},       // 6
-        { 0 },    // 7
-        {},
+              { 1, 2 }, // 0
+              { 3 },    // 1
+              { 3, 8 }, // 2
+              { 4 },    // 3
+              { 5, 6 }, // 4
+              {},       // 5
+              {},       // 6
+              { 0 },    // 7
+              {},
       };
 
 
@@ -486,15 +486,15 @@ class Entrega {
       */
 
       final int[][] directedRTree1 = {
-        { 1, 2, 3 }, // 0 = r
-        {},          // 1
-        { 4, 5 },    // 2
-        { 6 },       // 3
-        { 7, 8 },    // 4
-        {},          // 5
-        {},          // 6
-        {},          // 7
-        {},          // 8
+              { 1, 2, 3 }, // 0 = r
+              {},          // 1
+              { 4, 5 },    // 2
+              { 6 },       // 3
+              { 7, 8 },    // 4
+              {},          // 5
+              {},          // 6
+              {},          // 7
+              {},          // 8
       };
 
       /*
@@ -506,14 +506,14 @@ class Entrega {
       */
 
       final int[][] directedRTree2 = {
-        { 1 },
-        { 2, 3 },
-        {},
-        { 4, 5 },
-        {},
-        { 6, 7 },
-        {},
-        {},
+              { 1 },
+              { 2, 3 },
+              {},
+              { 4, 5 },
+              {},
+              { 6, 7 },
+              {},
+              {},
       };
 
       assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
@@ -621,41 +621,41 @@ class Entrega {
       assertThat(exercici1(2, 3, 6) == null);
 
       assertThat(
-        exercici2a(
-          new int[] { 1, 0 },
-          new int[] { 2, 4 }
-        )
-        == null
+              exercici2a(
+                      new int[] { 1, 0 },
+                      new int[] { 2, 4 }
+              )
+                      == null
       );
 
       assertThat(
-        Arrays.equals(
-          exercici2a(
-            new int[] { 3, -1, 2 },
-            new int[] { 5,  8, 9 }
-          ),
-          new int[] { 263, 360 }
-        )
+              Arrays.equals(
+                      exercici2a(
+                              new int[] { 3, -1, 2 },
+                              new int[] { 5,  8, 9 }
+                      ),
+                      new int[] { 263, 360 }
+              )
       );
 
       assertThat(
-        exercici2b(
-          new int[] { 1, 1 },
-          new int[] { 1, 0 },
-          new int[] { 2, 4 }
-        )
-        == null
+              exercici2b(
+                      new int[] { 1, 1 },
+                      new int[] { 1, 0 },
+                      new int[] { 2, 4 }
+              )
+                      == null
       );
 
       assertThat(
-        Arrays.equals(
-          exercici2b(
-            new int[] { 2,  -1, 5 },
-            new int[] { 6,   1, 1 },
-            new int[] { 10,  8, 9 }
-          ),
-          new int[] { 263, 360 }
-        )
+              Arrays.equals(
+                      exercici2b(
+                              new int[] { 2,  -1, 5 },
+                              new int[] { 6,   1, 1 },
+                              new int[] { 10,  8, 9 }
+                      ),
+                      new int[] { 263, 360 }
+              )
       );
 
       assertThat(exercici3a(10).equals(List.of(2, 5)));
