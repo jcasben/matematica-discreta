@@ -197,6 +197,7 @@ class Entrega {
               x -> x % 2 == 0, // x és múltiple de 2
               x -> x % 4 == 0 // x és múltiple de 4
           )
+
       );
 
       assertThat(
