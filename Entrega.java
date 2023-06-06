@@ -1,12 +1,8 @@
-  import java.lang.AssertionError;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
-import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
 /*
@@ -418,7 +414,51 @@ class Entrega {
      * vèrtex i-èssim.
      */
     static int exercici3(int[][] g, int i) {
-      return -1; // TO DO
+      return nodosGrado0(g, i, new boolean[g.length]);
+    }
+
+    /**
+     * Función recursiva para saber la cantidad de nodos con grado 0.
+     * Para poder hacer funcionar la función has de introducir el grafo inicial
+     * {@param grafo}, el nodo de comienzo, {@param nodo}, y una matriz con N
+     * elementos 'false' iguales a la cantidad de nodos de la matriz.
+     *
+     * @param grafo grafo original
+     * @param nodo nodo de comienzo
+     * @param nodosVisitados matriz con N elementos false iguales al número de vértices
+     * @return la cantidad de nodos con un descendiente de grado 0
+     */
+    private static int nodosGrado0(int[][] grafo, int nodo, boolean[] nodosVisitados) {
+      //Hemos encontrado un nodo con grado 0. Fin de la recursión
+      if (grafo[nodo].length == 0) {
+        //Si ya hemos visitado a este hijo, no lo tenemos en cuenta
+        if (nodosVisitados[nodo]) return 0;
+
+        //Si no, lo activamos como visto
+        nodosVisitados[nodo] = true;
+        return 1;
+      }
+
+      int nodosGrado0 = 0;
+
+      for (int elemento : grafo[nodo])
+        nodosGrado0 += nodosGrado0(grafo, elemento, nodosVisitados);
+
+
+      return nodosGrado0;
+      /*
+      final int[][] directedG1 = {
+        { 1, 2 }, // 0
+        { 3 },    // 1
+        { 3, 8 }, // 2
+        { 4 },    // 3
+        { 5, 6 }, // 4
+        {},       // 5
+        {},       // 6
+        { 0 },    // 7
+        {},
+      };
+       */
     }
 
     /*
@@ -689,10 +729,10 @@ class Entrega {
    * Podeu aprofitar el mètode `assertThat` per comprovar fàcilment que un valor sigui `true`.
    */
   public static void main(String[] args) {
-    Tema1.tests();
-    Tema2.tests();
+    //Tema1.tests();
+    //Tema2.tests();
     Tema3.tests();
-    Tema4.tests();
+    //Tema4.tests();
   }
 
   //TODO CAMBIAR ANTES DE LA ENTREGA
