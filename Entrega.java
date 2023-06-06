@@ -1,4 +1,4 @@
-import java.lang.AssertionError;
+  import java.lang.AssertionError;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -396,7 +396,14 @@ class Entrega {
      * Retornau l'ordre menys la mida del graf (no dirigit).
      */
     static int exercici1(int[][] g) {
-      return -1; // TO DO
+      int order = g.length;  //Cantidad de vértices
+      int size = 0;   //Cantidad de aristas
+
+      //Aplicamos el lema de las manos encajadas [Sumatorio aristas de v = 2 * E]
+      for (int[] nodos : g) size += nodos.length;
+      size /= 2;
+
+      return order - size;
     }
 
     /*
@@ -516,6 +523,8 @@ class Entrega {
         {},
       };
 
+      //TODO CAMBIAR ANTES DE LA ENTREGA
+      System.out.println("GRAFOS \n");
       assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
       assertThat(exercici1(undirectedW4) == 5 - 2*4);
 
@@ -685,6 +694,8 @@ class Entrega {
     Tema3.tests();
     Tema4.tests();
   }
+
+  //TODO CAMBIAR ANTES DE LA ENTREGA
 
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
   static void assertThat(boolean b) {
