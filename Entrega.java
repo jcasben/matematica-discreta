@@ -233,8 +233,68 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
      */
     static boolean exercici1(int[] a, int[][] rel) {
-      return false; // TO DO
+      //Para que sea de equivalencia ha de ser reflexiva, simétrica y transitiva.
+
+      boolean reflexiva = reflexiva(a, rel);
+      boolean simetrica = simetrica(a, rel);
+      boolean transitiva = transitiva(rel);
+
+      return reflexiva && simetrica && transitiva;
     }
+
+
+    private static boolean reflexiva(int[] a, int[][] rel) {
+      for (int valoresa : a) {
+        boolean valido = false;
+
+        for (int[] ints : rel) {
+          if ((ints[0] == valoresa) && (ints[1] == valoresa)) {
+            valido = true;
+            break;
+          }
+        }
+        if (!valido) return false;
+      }
+      return true;
+    }
+
+    private static boolean simetrica(int[] elementos, int[][] rel) {
+
+      for (int a : elementos) {
+        for (int b : elementos) {
+          boolean ab = false;
+          boolean ba = false;
+          for (int[] ints : rel) {
+            if(ints[0] == a && ints[1] == b) ab = true;
+            if(ints[0] == b && ints[1] == a) ba = true;
+          }
+          if(ab && !ba) return false;
+        }
+      }
+      return true;
+    }
+
+
+    private static boolean transitiva(int[][] rel) { //∀a, b, c : a R b ∧ b R c → a R c
+      int [] aux = new int[2];
+      for (int[] e1 : rel) {
+        for (int[] e2 : rel) {
+          if(e1[1] == e2[0]){
+            boolean existe = false;
+            aux[0] = e1[0];
+            aux[1] = e2[1];
+            for (int[] ints : rel) {
+              if(Arrays.equals(ints,aux)) {
+                existe = true;
+              }
+            }
+            if (!existe) return false;
+          }
+        }
+      }
+      return true;
+    }
+
 
     /*
      * Comprovau si la relació `rel` definida sobre `a` és d'equivalència. Si ho és, retornau el
@@ -276,7 +336,7 @@ class Entrega {
 
       assertThat(
               exercici1(
-                      new int[] { 0, 1, 2, 3 },
+                      new int[] { 0, 1, 2, 3},
                       new int[][] { {0, 0}, {1, 1}, {2, 2}, {3, 3}, {1, 3}, {3, 1} }
               )
       );
