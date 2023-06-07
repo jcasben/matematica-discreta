@@ -444,21 +444,7 @@ class Entrega {
       for (int elemento : grafo[nodo])
         nodosGrado0 += nodosGrado0(grafo, elemento, nodosVisitados);
 
-
       return nodosGrado0;
-      /*
-      final int[][] directedG1 = {
-        { 1, 2 }, // 0
-        { 3 },    // 1
-        { 3, 8 }, // 2
-        { 4 },    // 3
-        { 5, 6 }, // 4
-        {},       // 5
-        {},       // 6
-        { 0 },    // 7
-        {},
-      };
-       */
     }
 
     /*
@@ -466,7 +452,28 @@ class Entrega {
      * del graf subjacent. Suposau que totes les arestes tenen pes 1.
      */
     static int exercici4(int[][] g) {
-      return -1; // TO DO
+      //Llama a la función recursiva para buscar el diámetro
+      return calculateDiameter(0, g);
+    }
+
+    /**
+     * Calcula el diámetro de un árbol dirigido mirando recursivamente todos sus nodos.
+     *
+     * @param nodo nodo inicial
+     * @param graph grafo de búsqueda
+     * @return el diámetro del grafo
+     */
+    private static int calculateDiameter(int nodo, int[][] graph) {
+      if (graph[nodo].length == 0) return 1;
+
+      int diameter = 0;
+
+      for (int element : graph[nodo]) {
+        int childDiameter =  calculateDiameter(element, graph);
+        if (childDiameter + diameter > diameter) diameter +=  childDiameter;
+      }
+
+      return diameter;
     }
 
     /*
