@@ -295,7 +295,6 @@ class Entrega {
       return true;
     }
 
-
     /*
      * Comprovau si la relació `rel` definida sobre `a` és d'equivalència. Si ho és, retornau el
      * cardinal del conjunt quocient de `a` sobre `rel`. Si no, retornau -1.
@@ -303,7 +302,38 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
      */
     static int exercici2(int[] a, int[][] rel) {
-      return 0; // TO DO
+
+      if (!reflexiva(a,rel) || !simetrica(a,rel) || !transitiva(rel)) {
+        return -1;
+      }
+      //creamos una array de hasSet que posteriormente añadiremos cada set a un Set que al apliocar el metodo '.lenght' nos dara las clases de equivalencia
+      Set<Integer>[] clasesEq = new HashSet[a.length];
+
+      for (int pos = 0; pos < clasesEq.length; pos++) {
+        clasesEq[pos] = new HashSet<>();
+        clasesEq[pos].add(a[pos]); //añadimos cada valor de 'a' al principio de cada set
+      }
+
+      for (int i : a) {
+        for (int[] ints : rel) {
+          if(ints[0] == i) {
+            clasesEq[i].add(ints[1]);
+          }
+          if(ints[1] == i) {
+            clasesEq[i].add(ints[0]);
+          }
+        }
+      }
+
+      //Para unirlos y eliminar los sets repetidos en la array
+      Set<Set<Integer>> setsOfSets = new HashSet<>();
+      for (Set<Integer> clases : clasesEq) {
+        setsOfSets.add(clases);
+      }
+
+      System.out.println(setsOfSets.size());
+      return setsOfSets.size();
+
     }
 
     /*
