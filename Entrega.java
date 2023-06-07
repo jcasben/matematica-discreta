@@ -131,6 +131,7 @@ class Entrega {
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
      */
     static void tests() {
+      System.out.println("Tema 1 :");
       // Exercici 1
       // ∀x ∃!y. P(x) -> Q(x,y) ?
 
@@ -271,6 +272,7 @@ class Entrega {
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
      */
     static void tests() {
+      System.out.println("\nTema 2 :");
       // Exercici 1
       // `rel` és d'equivalencia?
 
@@ -426,6 +428,7 @@ class Entrega {
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
      */
     static void tests() {
+      System.out.println("\nTema 3 :");
       final int[][] undirectedK6 = {
         { 1, 2, 3, 4, 5 },
         { 0, 2, 3, 4, 5 },
@@ -548,7 +551,53 @@ class Entrega {
      * Si no en té, retornau null.
      */
     static int[] exercici1(int a, int b, int n) {
-      return null; // TO DO
+      /*
+      * hacer d = mcd(a,n)
+      * if (d % b != 0) return null
+      */
+      int d = mcd(a,n);
+      if(b % d != 0) return null;
+      int [] xy = euclides(n,a);
+
+      int sol = xy[1] * (b/d);
+      while (sol < 0) {
+        sol += (n/d);
+      }
+
+      return new int[] { sol, n };
+    }
+
+    private static int mcd(int a, int b) {
+      if(a%b==0){
+        return b;
+      }else{
+        return mcd(b,a%b);
+      }
+    }
+
+    private static int[] euclides(int ni, int ai) {
+      boolean neg = false;
+      if (ai < 0) {
+        ai *= -1;
+        neg = true;
+      }
+
+      int [] n = {ni,0,1,0};
+      int [] a = {ai,0,0,1};
+      int [] aux;
+
+      while (n[0] % a[0] != 0) {
+        a[1] = n[0] / a[0];
+        aux = Arrays.copyOf(a,4);
+        a[0] = n[0] % a[0];
+        a[2] = n[2] - a[2] * a[1];
+        a[3] = n[3] - a[3] * a[1];
+        n = Arrays.copyOf(aux,4);
+      }
+      if (neg) {
+        a[3] *= -1;
+      }
+      return new int[] {a[2], a[3]};
     }
 
     /*
@@ -616,10 +665,13 @@ class Entrega {
      * Aquí teniu alguns exemples i proves relacionades amb aquests exercicis (vegeu `main`)
      */
     static void tests() {
+      System.out.println("\nTema 4 :");
+      System.out.println("\nEjercicio 1a");
       assertThat(Arrays.equals(exercici1(17, 1, 30), new int[] { 23, 30 }));
       assertThat(Arrays.equals(exercici1(-2, -4, 6), new int[] { 2, 3 }));
       assertThat(exercici1(2, 3, 6) == null);
 
+      System.out.println("\nEjercicio 2a");
       assertThat(
         exercici2a(
           new int[] { 1, 0 },
@@ -638,6 +690,7 @@ class Entrega {
         )
       );
 
+      System.out.println("\nEjercicio 2b");
       assertThat(
         exercici2b(
           new int[] { 1, 1 },
@@ -657,11 +710,12 @@ class Entrega {
           new int[] { 263, 360 }
         )
       );
-
+      System.out.println("\nEjercicio 3a");
       assertThat(exercici3a(10).equals(List.of(2, 5)));
       assertThat(exercici3a(1291).equals(List.of(1291)));
       assertThat(exercici3a(1292).equals(List.of(2, 2, 17, 19 )));
 
+      System.out.println("\nEjercicio 3b");
       assertThat(exercici3b(10) == 400);
 
       // Aquí 1292³ ocupa més de 32 bits amb el signe, però es pot resoldre sense calcular n³.
