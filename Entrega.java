@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -404,9 +402,50 @@ class Entrega {
 
     /*
      * Suposau que el graf (no dirigit) és connex. És bipartit?
+     *
+     * Para comprobar si un grafo es bipartido usaremos la técnica de asignar colores a los nodos
+     * si dos nodos tienen el mismo color, no es válido.
      */
-    static boolean exercici2(int[][] g) {
-      return false; // TO DO
+    static boolean exercici2(int[][] graph) {
+      boolean[] visited = new boolean[graph.length];
+      int[] colors = new int[graph.length];
+
+      //En vez de una función recurrente hemos optado por usar una cola
+      //con los siguientes nodos a comprobar
+      LinkedList<Integer> nextNodes = new LinkedList<>();
+
+      for (int i = 0; i < graph.length; i++) {
+        //Si ya hemos comprobado este nodo, lo saltamos
+        if (visited[i]) continue;
+
+        //Marcamos como visitado el nodo y le asignamos un color
+        visited[i] = true;
+        nextNodes.add(i);
+        colors[i] = 1;
+
+        //Recorremos todos los posibles hijos del nodo usando nuestro stack
+        while (!nextNodes.isEmpty()) {
+          int currentNode = nextNodes.poll();
+
+          //Obtenemos el color del nodo y el que deberían tener sus hijos
+          int currentColor = colors[currentNode];
+          int childColor = currentColor == 1 ? -1 : 1;
+
+          //Comprobamos si cada hijo tiene su color correspondiente
+          for (int node : graph[currentNode]) {
+            if (visited[node]) {
+              if (currentColor == colors[node]) return false;
+            }else {
+              nextNodes.add(node);
+              colors[node] = childColor;
+              visited[node] = true;
+            }
+          }
+        }
+
+      }
+
+      return true;
     }
 
     /*
