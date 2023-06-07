@@ -609,8 +609,6 @@ class Entrega {
         {},
       };
 
-      //TODO CAMBIAR ANTES DE LA ENTREGA
-      System.out.println("GRAFOS \n");
       assertThat(exercici1(undirectedK6) == 6 - 5*6/2);
       assertThat(exercici1(undirectedW4) == 5 - 2*4);
 
