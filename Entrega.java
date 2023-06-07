@@ -1,4 +1,5 @@
 import java.lang.AssertionError;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -331,18 +332,58 @@ class Entrega {
         setsOfSets.add(clases);
       }
 
-      System.out.println(setsOfSets.size());
       return setsOfSets.size();
-
     }
 
     /*
      * Comprovau si la relació `rel` definida entre `a` i `b` és una funció.
      *
      * Podeu soposar que `a` i `b` estan ordenats de menor a major.
+     *
      */
+    static int contadora = 0;
     static boolean exercici3(int[] a, int[] b, int[][] rel) {
-      return false; // TO DO
+      //Con este for confirmamos que los pares son correctos.
+      for (int[] ints : rel) {
+        if(!perteneceAB(ints[0], ints[1],a,b)) {
+          return false;
+        }
+      }
+      //Con este for comprobamos que no salen dos relaciones de el mismo a o que no sale ninguna de un elemento de a
+      for (int num : a) {
+        int cont = 0;
+        for (int[] ints : rel) {
+          if(ints[0] == num){
+            cont++;
+          }
+        }
+        if(cont != 1) {
+          return false;
+        }
+      }
+
+      //Si llega hasta este punto podemos hacer return de true
+      return true;
+
+    }
+
+    private static boolean perteneceAB(int vala, int valb, int[] a, int[] b) {
+      boolean pertenecea = false;
+      boolean perteneceb = false;
+      int conta = 0;
+      for (int num : a) {
+        if (num == vala) {
+          pertenecea = true;
+          break;
+        }
+      }
+      for (int num : b) {
+        if (num == valb) {
+          perteneceb = true;
+          break;
+        }
+      }
+      return pertenecea && perteneceb;
     }
 
     /*
@@ -402,7 +443,7 @@ class Entrega {
       // Exercici 3
       // `rel` és una funció?
 
-      final int[] int05 = { 0, 1, 2, 3, 4, 5 };
+      final int[] int05 = { 0, 1, 2, 3, 4, 5 } ;
 
       assertThat(
               exercici3(
@@ -770,10 +811,11 @@ class Entrega {
    * Podeu aprofitar el mètode `assertThat` per comprovar fàcilment que un valor sigui `true`.
    */
   public static void main(String[] args) {
-    Tema1.tests();
+    //Tema1.tests();
+    System.out.println("TEMA 2");
     Tema2.tests();
-    Tema3.tests();
-    Tema4.tests();
+    //Tema3.tests();
+    //Tema4.tests();
   }
 
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
