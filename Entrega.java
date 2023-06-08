@@ -234,7 +234,9 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
      */
     static boolean exercici1(int[] a, int[][] rel) {
-      //Para que sea de equivalencia ha de ser reflexiva, simétrica y transitiva.
+      /*
+       * Para que sea de equivalencia ha de ser reflexiva, simétrica y transitiva.
+       */
 
       boolean reflexiva = reflexiva(a, rel);
       boolean simetrica = simetrica(a, rel);
@@ -243,7 +245,10 @@ class Entrega {
       return reflexiva && simetrica && transitiva;
     }
 
-
+    /*
+     * Para comprobar que es reflexiva ha de cumplir:
+     *  ∀a : a R a
+     */
     private static boolean reflexiva(int[] a, int[][] rel) {
       for (int valoresa : a) {
         boolean valido = false;
@@ -259,9 +264,13 @@ class Entrega {
       return true;
     }
 
+    /*
+     * Para comprobar que es simetrica ha de cumplir:
+     *  ∀a,b : a R b → b R a
+     */
     private static boolean simetrica(int[] elementos, int[][] rel) {
 
-      for (int a : elementos) {
+/*      for (int a : elementos) {
         for (int b : elementos) {
           boolean ab = false;
           boolean ba = false;
@@ -271,12 +280,26 @@ class Entrega {
           }
           if(ab && !ba) return false;
         }
+      }*/
+
+//----------------
+      for (int[] ab : rel) {
+        boolean existeba = false;
+        for (int[] ba : rel) {
+          if(ab[0] == ba[1] && ab[1] == ba[0]) existeba = true;
+        }
+        if(!existeba) return false;
       }
+
       return true;
+
     }
 
-
-    private static boolean transitiva(int[][] rel) { //∀a, b, c : a R b ∧ b R c → a R c
+    /*
+     * Para comprobar que es transitiva ha de cumplir:
+     *  ∀a, b, c : a R b ∧ b R c → a R c
+     */
+    private static boolean transitiva(int[][] rel) {
       int [] aux = new int[2];
       for (int[] e1 : rel) {
         for (int[] e2 : rel) {
@@ -303,16 +326,22 @@ class Entrega {
      * Podeu soposar que `a` està ordenat de menor a major.
      */
     static int exercici2(int[] a, int[][] rel) {
-
+      /*
+       * Lo primero de todo es comprobar si es una relacion de equivalencia
+       */
       if (!reflexiva(a,rel) || !simetrica(a,rel) || !transitiva(rel)) {
         return -1;
       }
-      //creamos una array de hasSet que posteriormente añadiremos cada set a un Set que al apliocar el metodo '.lenght' nos dara las clases de equivalencia
+
+      /*
+       * Creamos una array de hasSet que posteriormente añadiremos cada set a un Set que al apliocar
+       * el metodo '.lenght' nos dara las clases de equivalencia
+       */
       Set<Integer>[] clasesEq = new HashSet[a.length];
 
       for (int pos = 0; pos < clasesEq.length; pos++) {
         clasesEq[pos] = new HashSet<>();
-        clasesEq[pos].add(a[pos]); //añadimos cada valor de 'a' al principio de cada set
+        clasesEq[pos].add(a[pos]); //añadimos cada valor de 'a' al a cada set
       }
 
       for (int i : a) {
@@ -326,7 +355,9 @@ class Entrega {
         }
       }
 
-      //Para unirlos y eliminar los sets repetidos en la array
+      /*
+       * Para unirlos y eliminar los sets repetidos en la array
+       */
       Set<Set<Integer>> setsOfSets = new HashSet<>();
       for (Set<Integer> clases : clasesEq) {
         setsOfSets.add(clases);
@@ -343,13 +374,20 @@ class Entrega {
      */
     static int contadora = 0;
     static boolean exercici3(int[] a, int[] b, int[][] rel) {
-      //Con este for confirmamos que los pares son correctos.
+
+      /*
+       * Con este for confirmamos que los pares son correctos.
+       */
       for (int[] ints : rel) {
         if(!perteneceAB(ints[0], ints[1],a,b)) {
           return false;
         }
       }
-      //Con este for comprobamos que no salen dos relaciones de el mismo a o que no sale ninguna de un elemento de a
+
+      /*
+       * Con este for comprobamos que no salen dos relaciones de el mismo a o que no sale ninguna
+       * de un elemento de a
+       */
       for (int num : a) {
         int cont = 0;
         for (int[] ints : rel) {
@@ -366,11 +404,9 @@ class Entrega {
       return true;
 
     }
-
     private static boolean perteneceAB(int vala, int valb, int[] a, int[] b) {
       boolean pertenecea = false;
       boolean perteneceb = false;
-      int conta = 0;
       for (int num : a) {
         if (num == vala) {
           pertenecea = true;
@@ -395,7 +431,83 @@ class Entrega {
      * Podeu suposar que `dom` i `codom` estàn ordenats de menor a major.
      */
     static int exercici4(int[] dom, int[] codom, Function<Integer, Integer> f) {
-      return -1; // TO DO
+
+      boolean exaustiva = true;
+      boolean inyectiva = true;
+      int freqMax = 1;
+      int[] imagen = new int[dom.length];
+
+      /*
+       * Miramos si es exaustiva:
+       * Si el dominio de llegada ('codom') es mayor al elemento de salida ('dom')
+       */
+
+      if (dom.length < codom.length) exaustiva = false;
+
+      if(exaustiva){
+
+        for (int i = 0; i < dom.length; i++) {
+          imagen[i] = f.apply(dom[i]);
+        }
+
+        for (int c : codom) {
+          boolean existe = false;
+          for (int i : imagen) {
+            if(c == i){
+              existe = true;
+            }
+          }
+          if(!existe){
+            exaustiva = false;
+            break;
+          }
+        }
+
+        /*
+         * Buscamos la frecuancia máxima, para ello primero ordenamos la array de imagenes
+         */
+        int contadorElemAct = 1;
+
+        Arrays.sort(imagen);
+        for (int i = 1; i < imagen.length; i++) {
+          if (imagen[i] == imagen[i - 1])
+            contadorElemAct++;
+          else
+            contadorElemAct = 1;
+
+          if (contadorElemAct > freqMax) {
+            freqMax = contadorElemAct;
+
+          }
+        }
+      }
+
+      /*
+       * Miramos si es inyectiva
+       * Si f (a) = f (a'), entonces a = a'
+       */
+      for (int a : dom) {
+        for (int aPrima : dom) {
+          if((f.apply(a).equals(f.apply(aPrima))) && (a != aPrima)){
+            inyectiva = false;
+          }
+        }
+      }
+      /*
+       * Añadimos las imagenes a un set para ver cuantas imagenes diferentes tenemos
+       */
+      Set<Integer> imagenes = new HashSet<>();
+      for (int elemento : dom) {
+        imagenes.add(f.apply(elemento));
+      }
+
+      if(exaustiva){
+        return freqMax;
+      } else if (inyectiva){
+        return imagenes.size() - codom.length;
+      }else {
+        return 0;
+      }
     }
 
     /*
@@ -811,11 +923,10 @@ class Entrega {
    * Podeu aprofitar el mètode `assertThat` per comprovar fàcilment que un valor sigui `true`.
    */
   public static void main(String[] args) {
-    //Tema1.tests();
-    System.out.println("TEMA 2");
+    Tema1.tests();
     Tema2.tests();
-    //Tema3.tests();
-    //Tema4.tests();
+    Tema3.tests();
+    Tema4.tests();
   }
 
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
