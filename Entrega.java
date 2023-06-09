@@ -239,7 +239,7 @@ class Entrega {
        */
 
       boolean reflexiva = reflexiva(a, rel);
-      boolean simetrica = simetrica(a, rel);
+      boolean simetrica = simetrica(rel);
       boolean transitiva = transitiva(rel);
 
       return reflexiva && simetrica && transitiva;
@@ -268,21 +268,8 @@ class Entrega {
      * Para comprobar que es simetrica ha de cumplir:
      *  ∀a,b : a R b → b R a
      */
-    private static boolean simetrica(int[] elementos, int[][] rel) {
+    private static boolean simetrica(int[][] rel) {
 
-/*      for (int a : elementos) {
-        for (int b : elementos) {
-          boolean ab = false;
-          boolean ba = false;
-          for (int[] ints : rel) {
-            if(ints[0] == a && ints[1] == b) ab = true;
-            if(ints[0] == b && ints[1] == a) ba = true;
-          }
-          if(ab && !ba) return false;
-        }
-      }*/
-
-//----------------
       for (int[] ab : rel) {
         boolean existeba = false;
         for (int[] ba : rel) {
@@ -329,7 +316,7 @@ class Entrega {
       /*
        * Lo primero de todo es comprobar si es una relacion de equivalencia
        */
-      if (!reflexiva(a,rel) || !simetrica(a,rel) || !transitiva(rel)) {
+      if (!reflexiva(a,rel) || !simetrica(rel) || !transitiva(rel)) {
         return -1;
       }
 
