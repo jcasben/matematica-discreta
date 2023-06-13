@@ -551,22 +551,31 @@ class Entrega {
      * Si no en té, retornau null.
      */
     static int[] exercici1(int a, int b, int n) {
-      /*
-      * hacer d = mcd(a,n)
-      * if (d % b != 0) return null
-      */
       int d = mcd(a,n);
       if(b % d != 0) return null;
       int [] xy = euclides(n,a);
 
-      int sol = xy[1] * (b/d);
-      while (sol < 0) {
-        sol += (n/d);
-      }
+      int sol = xy[1];
+      int k = n/d;
 
-      return new int[] { sol, n };
+      //Si n/mcd(a,n) es < 0, le cambiamos el signo.
+      if(k < 0) k *= -1;
+
+      /*
+       * Mientras la x < 0, le sumaremos el n/mcd(a,n)
+       */
+      while (sol < 0) {
+        sol += k;
+      }
+      return new int[] { sol, k };
     }
 
+    /**
+     * Método recursivo para calcular el mcd de 2 números
+     * @param a número 1
+     * @param b número 2
+     * @return mcd del número 1 y número 2
+     */
     private static int mcd(int a, int b) {
       if(a%b==0){
         return b;
@@ -575,8 +584,21 @@ class Entrega {
       }
     }
 
+    /**
+     * Implementación del algoritmo de Euclides.
+     * @param ni módulo
+     * @param ai a
+     * @return array donde la posición 0 es la x y la posición 1 es la y
+     */
     private static int[] euclides(int ni, int ai) {
+
       boolean neg = false;
+
+      /*
+       * Como el algoritmo de Euclides no se aplica con números negativos, primero miramos si `ai` es negativo. Si lo es,
+       * lo multiplicaremos por -1 para dejarlo positivo. Además, activaremos el boolean `neg` para que al final de la
+       * ejecución se devuelva el signo negativo a la `y`, que es el número relacionado a la `ai`.
+       */
       if (ai < 0) {
         ai *= -1;
         neg = true;
@@ -586,6 +608,9 @@ class Entrega {
       int [] a = {ai,0,0,1};
       int [] aux;
 
+      /*
+       * Mientras el residuo de la división de `ni` y `ai` sea distinto a 0, realizaremos este proceso.
+       */
       while (n[0] % a[0] != 0) {
         a[1] = n[0] / a[0];
         aux = Arrays.copyOf(a,4);
@@ -594,6 +619,7 @@ class Entrega {
         a[3] = n[3] - a[3] * a[1];
         n = Arrays.copyOf(aux,4);
       }
+      //Le devolvemos el signo negativo al factor `y`
       if (neg) {
         a[3] *= -1;
       }
@@ -615,7 +641,39 @@ class Entrega {
      * Si no en té, retornau null.
      */
     static int[] exercici2a(int[] b, int[] n) {
-      return null; // TO DO
+      //Inicializacion de los arrays que contendrán los valores P, Q y la solución de las ecuaciones.
+      int [] p = new int[n.length];
+      int [] q = new int[n.length];
+      int [] sol = { 0, 1 };
+      Arrays.fill(p,1);
+
+      for (int i = 0; i < n.length; i++) {
+        for (int j = 0; j < n.length; j++) {
+          if (i == j) {
+            continue;
+          }
+          /*
+           * Para comprobar si el sistema de ecuaciones tiene solución, miramos si alguna pareja de módulos no es
+           * coprima
+           */
+          if (mcd(n[i],n[j]) != 1) return null;
+          //Utilizamos el bucle que recorre el array de modulos para calcular la ` P `
+          p[i] *= n[j];
+        }
+        //Calculamos la ` m `
+        sol[1] *= n[i];
+        //Utilizamos el algoritmo de Euclides para calcular la ` Q `
+        int [] aux = euclides(n[i],(p[i] % n[i]));
+        q[i] = aux[1];
+        //Calculamos la solución utilizando la formula: x = P1*Q1*a1 + P2*Q2*a2 + ... + Pn*Qn*an
+        sol[0] += p[i]*q[i]*b[i];
+      }
+
+      //Si la solución es < 0, le sumamos la ` m ` hasta que sea positivo
+      while(sol[0] < 0) {
+        sol[0] += sol[1];
+      }
+      return sol;
     }
 
     /*
@@ -633,7 +691,40 @@ class Entrega {
      * Si no en té, retornau null.
      */
     static int[] exercici2b(int[] a, int[] b, int[] n) {
-      return null; // TO DO
+      int [] nb = new int[b.length];
+      int [] nn = new int[n.length];
+      int [] aux;
+      for (int i = 0; i < a.length; i++) {
+        aux = transformToXB(a[i], b[i], n[i]);
+        if (aux == null) return null;
+        nb[i] = aux[0];
+        nn[i] = aux[1];
+      }
+      int [] sol = exercici2a(nb,nn);
+      if (sol == null) return null;
+
+      System.out.println(sol[0] + ", " + sol[1]);
+
+      return sol; // TO DO
+    }
+
+    static int[] transformToXB(int a, int b, int n) {
+      int d = mcd(a,n);
+      if(b % d != 0) return null;
+      int [] xy = euclides(n,a);
+
+      int sol = xy[1];
+      int k = n/d;
+
+      //Si n/mcd(a,n) es < 0, le cambiamos el signo.
+      if(k < 0) k *= -1;
+
+      //Se calcula la b/mcd(a,n), si este da negativo, se cambia a positivo.
+      int k2 = (b/d);
+      if (k2 < 0) k2 *= -1;
+      sol *= k2;
+
+      return new int[] { sol, k };
     }
 
     /*
@@ -646,7 +737,38 @@ class Entrega {
      * (el que coneixeu com el mètode manual d'anar provant).
      */
     static ArrayList<Integer> exercici3a(int n) {
-      return new ArrayList<>(); // TO DO
+      return primeDescomposition(n); // TO DO
+    }
+
+    /**
+     * Calcula la descomposición en números primos de un número
+     * @param n número a descomponer
+     * @return factores primos en los que se ha descompuesto el número
+     */
+    public static ArrayList<Integer> primeDescomposition(int n) {
+      //Aquí se guardará la descomposición del número.
+      ArrayList <Integer> descomposition = new ArrayList<>();
+      /*
+      * Se empieza la descomposición a partir del 2, pero si el número que se introduce es un 1, se devolverá
+      * directamente el 1.
+      */
+      int factor = 2;
+      if(n == 1) {
+        descomposition.add(n);
+      } else {
+        /*
+        * Mientras el número sea mayor o igual que el factor primo, se añadirá este factor a la descomposición y se
+        * dividirá el número por ese factor.
+        */
+        while (factor <= n) {
+          while (n % factor == 0) {
+            descomposition.add(factor);
+            n /= factor;
+          }
+          factor++;
+        }
+      }
+      return descomposition;
     }
 
     /*
@@ -658,7 +780,39 @@ class Entrega {
      * No podeu utilitzar `long` per solucionar aquest problema. Necessitareu l'exercici 3a.
      */
     static int exercici3b(int n) {
-      return -1; // TO DO
+      ArrayList<Integer> nDescomposition = primeDescomposition(n);
+
+      //Se almacenan los elementos únicos de la factorización en una lista.
+      List<Integer> indexes = new ArrayList<>(new HashSet<>(nDescomposition));
+
+      //Contamos cuantas veces aparece cada índice
+      int[] count = new int[indexes.size()];
+      for (Integer integer : nDescomposition) count[indexes.indexOf(integer)]++;
+
+      int fiEuler = 1;
+
+      //Calculamos la fi de Euler
+      for (int i = 0; i < count.length; i++) {
+        count[i] *= 3;
+        fiEuler *= pow(indexes.get(i), count[i]) - pow(indexes.get(i), count[i] - 1);
+      }
+
+      return fiEuler;
+    }
+
+    /**
+     * Calcula la potencia de el número dado elevado al exponente.
+     *
+     * @param number numero a elevar
+     * @param exponent exponente
+     * @return la potencia
+     */
+    private static int pow(int number, int exponent) {
+      int result = number;
+
+      for (int i = 0; i < exponent - 1; i++) result *= number;
+
+      return result;
     }
 
     /*
