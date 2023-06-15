@@ -1019,9 +1019,7 @@ class Entrega {
       int [] sol = exercici2a(nb,nn);
       if (sol == null) return null;
 
-      System.out.println(sol[0] + ", " + sol[1]);
-
-      return sol; // TO DO
+      return sol;
     }
 
     static int[] transformToXB(int a, int b, int n) {
