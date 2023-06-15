@@ -1211,9 +1211,7 @@ class Entrega {
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
   static void assertThat(boolean b) {
     if (!b)
-      //throw new AssertionError();
-      System.out.println("falso");
-    else System.out.println("verdadero");
+      throw new AssertionError();
   }
 }
 
