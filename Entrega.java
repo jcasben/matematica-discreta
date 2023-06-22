@@ -1,6 +1,12 @@
-import java.util.*;
+import java.lang.AssertionError;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
 /*
@@ -638,7 +644,7 @@ class Entrega {
 
       //En vez de una función recurrente hemos optado por usar una cola
       //con los siguientes nodos a comprobar
-      LinkedList<Integer> nextNodes = new LinkedList<>();
+      List<Integer> nextNodes = new ArrayList<>();
 
       for (int i = 0; i < graph.length; i++) {
         //Si ya hemos comprobado este nodo, lo saltamos
@@ -651,7 +657,8 @@ class Entrega {
 
         //Recorremos todos los posibles hijos del nodo usando nuestro stack
         while (!nextNodes.isEmpty()) {
-          int currentNode = nextNodes.poll();
+          int currentNode = nextNodes.get(0);
+          nextNodes.remove(0);
 
           //Obtenemos el color del nodo y el que deberían tener sus hijos
           int currentColor = colors[currentNode];
@@ -1203,8 +1210,6 @@ class Entrega {
     Tema3.tests();
     Tema4.tests();
   }
-
-  //TODO CAMBIAR ANTES DE LA ENTREGA
 
   /// Si b és cert, no fa res. Si b és fals, llança una excepció (AssertionError).
   static void assertThat(boolean b) {
